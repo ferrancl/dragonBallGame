@@ -1,0 +1,11 @@
+import pygame
+
+class goku1(pygame.sprite.Sprite):
+
+    def __init__ (self, a,pos):
+        super(goku1, self).__init__()
+        self.image = pygame.transform.rotozoom(a, 0, 0.25)
+        self.rect = self.image.get_rect().move(pos)
+        
+    def update(self):
+        pass

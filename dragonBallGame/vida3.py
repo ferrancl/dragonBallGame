@@ -1,0 +1,125 @@
+import pygame
+from spritea3 import Animacio
+from spritea import Animacio
+
+class Vida(pygame.sprite.Sprite):
+
+    (A1,A2,A3,A4,VIDA1,VIDA2,VIDA3,VIDA4,VIDA5,VIDA6,VIDA7,VIDA8,VIDA9,VIDA10,VIDA11,VIDA12,VIDA13,VIDA14,VIDA15,VIDA16)=list(range(20))
+
+    def __init__(self, spritesheet, pos, nfils, ncols):
+        super(Vida, self).__init__()
+        self.spritesheet = spritesheet
+        self.estat = Vida.VIDA1
+        self.count = 0
+        self.nframes = ncols
+        self.llista_im = crea_matriu_imatges(spritesheet, nfils, ncols)
+        self.image = self.llista_im[0][0] 
+        self.rect = self.image.get_rect().move(pos)
+        self.a=pygame.time.get_ticks()
+
+    def update(self,heroi1,heroi2):
+
+        l=[Vida.VIDA1,Vida.VIDA2,Vida.VIDA3,Vida.VIDA4,Vida.VIDA5,Vida.VIDA6,Vida.VIDA7,Vida.VIDA8,Vida.VIDA9,Vida.VIDA10,Vida.VIDA11,Vida.VIDA12,Vida.VIDA13,Vida.VIDA14,Vida.VIDA15,Vida.VIDA16]
+
+        self.count = self.count + 1
+        if self.count == self.nframes * 10:
+            self.count = 0
+
+        if self.estat==Vida.VIDA1:
+            self.image=self.llista_im[0][0]
+            n=0
+        elif self.estat==Vida.VIDA2:
+            self.image=self.llista_im[0][1]
+            n=1
+        elif self.estat==Vida.VIDA3:
+            self.image=self.llista_im[0][2]
+            n=2
+        elif self.estat==Vida.VIDA4:
+            self.image=self.llista_im[0][3]
+            n=3
+        elif self.estat==Vida.VIDA5:
+            self.image=self.llista_im[1][0]
+            n=4
+        elif self.estat==Vida.VIDA6:
+            self.image=self.llista_im[1][1]
+            n=5
+        elif self.estat==Vida.VIDA7:
+            self.image=self.llista_im[1][2]
+            n=6
+        elif self.estat==Vida.VIDA8:
+            self.image=self.llista_im[1][3]
+            n=7
+        elif self.estat==Vida.VIDA9:
+            self.image=self.llista_im[2][0]
+            n=8
+        elif self.estat==Vida.VIDA10:
+            self.image=self.llista_im[2][1]
+            n=9
+        elif self.estat==Vida.VIDA11:
+            self.image=self.llista_im[2][2]
+            n=10
+        elif self.estat==Vida.VIDA12:
+            self.image=self.llista_im[2][3]
+            n=11
+        elif self.estat==Vida.VIDA13:
+            self.image=self.llista_im[3][0]
+            n=12
+        elif self.estat==Vida.VIDA14:
+            self.image=self.llista_im[3][1]
+            n=13
+        elif self.estat==Vida.VIDA15:
+            self.image=self.llista_im[3][2]
+            n=14
+        elif self.estat==Vida.VIDA16:
+            self.image=self.llista_im[3][3]
+            n=15
+
+        if n<15:
+            if pygame.sprite.collide_mask(heroi1,heroi2)!=None:
+                if heroi1.estat==Animacio.PUNY1D and heroi2.estat!=Animacio.DEFENSAE:
+                    n=n+1
+                    self.estat=l[n]
+                    a=pygame.mixer.Sound('cop_puny.wav')
+                    pygame.mixer.Sound.play(a)
+                    
+                if heroi1.estat==Animacio.PATADA2D and heroi2.estat!=Animacio.DEFENSAE:
+                    n=n+1
+                    self.estat=l[n]
+                    a=pygame.mixer.Sound('cop_puny.wav')
+                    pygame.mixer.Sound.play(a)
+
+                if heroi1.estat==Animacio.PUNY1E and heroi2.estat!=Animacio.DEFENSAD:
+                    n=n+1
+                    self.estat=l[n]
+                    a=pygame.mixer.Sound('cop_puny.wav')
+                    pygame.mixer.Sound.play(a)
+                
+                if heroi1.estat==Animacio.PATADA2E and heroi2.estat!=Animacio.DEFENSAD:
+                    n=n+1
+                    self.estat=l[n]
+                    a=pygame.mixer.Sound('cop_puny.wav')
+                    pygame.mixer.Sound.play(a)
+        
+                if heroi1.estat==Animacio.PATADA1D and heroi2.estat!=Animacio.DEFENSAE:
+                    n=n+1
+                    self.estat=l[n]
+                    a=pygame.mixer.Sound('cop_puny.wav')
+                    pygame.mixer.Sound.play(a)
+
+                if heroi1.estat==Animacio.PATADA1E and heroi2.estat!=Animacio.DEFENSAD:
+                    n=n+1
+                    self.estat=l[n]
+                    a=pygame.mixer.Sound('cop_puny.wav')
+                    pygame.mixer.Sound.play(a)
+        
+
+def crea_matriu_imatges(spritesheet, nfils, ncols):
+    mides = ( spritesheet.get_width() // ncols,
+                  spritesheet.get_height() // nfils )
+    matriu = [[] for i in range(nfils)]
+
+    for fila in range(nfils):
+        for columna in range(ncols):
+            tros = pygame.Rect( (mides[0] * columna, mides[1] * fila), mides )
+            matriu[fila].append(spritesheet.subsurface(tros))
+    return matriu
